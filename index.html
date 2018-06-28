@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8">
-    <title><%= title %></title>
+    <title>BLOCK TETRIS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name=”viewport” content=”width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no” />
 
@@ -51,13 +51,13 @@
             <div class="ranking">
                 <div class="title">Ranking</div>
                 <ul>
-                    <% for(var i = 0; i < scores.length; i++){ %>
+                    <!--<% for(var i = 0; i < scores.length; i++){ %>
                     <li>
                         <span class="num"><%= i + 1 %></span>
                         <span class="name"><%= scores[i].id %></span>
                         <span class="rscore"><%= scores[i].score %> 점</span>
                     </li>
-                    <% } %>
+                    <% } %>-->
                 </ul>
             </div>
 
@@ -95,42 +95,44 @@
 </body>
 
 <script>
-  function refreshRank() {
+  function getScore() {
     $.ajax({
-      url : '/score.do',
+      url : 'http://localhost:8080/tetris/score',
       type : 'get',
       dataType : 'json',
       success : function(data) {
-        var list = data.list;
+        var list = data;
         var $con = $('.ranking > ul');
         $con.empty();
 
         for(var i=0; i<list.length; i++) {
           var id = list[i].id;
           var score = list[i].score;
-          var item = new StringBuffer();
-          item.append('<li>');
-          item.append('	<span class="num">'+(i+1)+'.</span>');
-          item.append('	<span class="name">'+id+'</span>');
-          item.append('	<span class="rscore">'+score+' 점</span>');
-          item.append('</li>');
+          var item = '';
+          item += '<li>';
+          item += '<span class="num">'+(i+1)+'.</span>';
+          item += '<span class="name">'+id+'</span>';
+          item += '<span class="rscore">'+score+' 점</span>';
+          item += '</li>';
           $con.append(item.toString());
         }
       },
       error: function () {
         alert("웹페이지에 문제가 발생 하였습니다.");
-        location.reload();
+        // location.reload();
         return false;
       }
     });
   }
+
+  getScore();
 
   $('.save-wrap .btn').on('click', function(e) {
     var id = $('#id').val();
     var score = $('.gameover .score .num').text();
 
     $.ajax({
-      url : '/score',
+      url : 'http://localhost:8080/tetris/score',
       type : 'post',
       dataType : 'json',
       data : {
@@ -138,7 +140,7 @@
         score: score
       },
       success : function(data) {
-        if(data.result === 'OK') {
+        if(data === 1) {
           $('.save-wrap').removeClass('active');
           $('.gameover .save').hide();
 
