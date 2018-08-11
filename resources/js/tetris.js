@@ -54,7 +54,7 @@ function gameOver() {
     $(".gameover").show();
     $(".gameover .save").show();
     $(".gameover .score .num").text(score);
-    $(".container").addClass("blur");
+    // $(".container").addClass("blur");
 }
 
 //다음블럭
