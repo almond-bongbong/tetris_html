@@ -134,13 +134,13 @@
     $.ajax({
       url : 'https://api.almondbongbong.com/tetris/score',
       type : 'post',
-      dataType : 'json',
-      data : {
+      contentType: 'application/json',
+      data : JSON.stringify({
         id: id,
         score: score
-      },
+      }),
       success : function(data) {
-        if(data === 1) {
+        if(data > 0) {
           $('.save-wrap').removeClass('active');
           $('.gameover .save').hide();
 
